@@ -17,8 +17,8 @@ public class UserRepository {
     @Autowired
     private UserCrudRepository crudRepositorio;
     
-    public Optional<User> getUser(Integer id) {
-        return crudRepositorio.findById(id);
+    public List<User> listarUsuarios(){
+      return crudRepositorio.findAll();
     }
     
     public Optional<User> getUser(int id){
@@ -35,19 +35,24 @@ public class UserRepository {
     
     public void delete(User user) {
         crudRepositorio.delete(user);
-    }
-    
-    public List<User> listarUsuarios(){
-      return crudRepositorio.findAll();
     } 
 
-    public boolean existeEmail(String email) {
+    public boolean emailExist(String email) {
         Optional<User> usuario = crudRepositorio.findByEmail(email);
+
         return !usuario.isEmpty();
     }
 
-    public Optional<User> autenticarUsuario(String email, String password) {
-        return crudRepositorio.findByEmailAndPassword(email, password);           
+    public Optional<User> autenticateUser(String email, String password) {
+        return crudRepositorio.findByEmailAndPassword(email, password);
+    }
+    
+     public Optional<User> lastUserId(){
+        return crudRepositorio.findTopByOrderByIdDesc();
+    }
+     
+    public List<User> listBirthtDayMonth(String month){
+        return crudRepositorio.findByMonthBirthtDay(month);
     }
 
 }
